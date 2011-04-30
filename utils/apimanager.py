@@ -65,15 +65,15 @@ class ApiManager:
         # если ошибка, создаем словарь с информацией о ней, и отдаем
         if int(xml.attrib['iserror']) == 1:
             result =    {
-                            'error': 1,
+                            'error': True,
                             'message': xml.findtext('message'),
-                            'code': bool(xml.findtext('code'))
+                            'code': int(xml.findtext('code'))
                         }
             return result
         # иначе преобраем ответ в словарь
         else:
             result =    {
-                            'error': 0,
+                            'error': False,
                             # список результатов запроса к api
                             'items': []
                         }
