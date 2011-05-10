@@ -18,7 +18,7 @@ def SendRequest(params):
         return result
     else:
         print "Request error occurs\nCode:%d\nMessage: %s" % (result['code'], result['message'])
-        return
+        return None
     
 
 def TestConnection(args):
@@ -26,25 +26,18 @@ def TestConnection(args):
     
 
 def ShortenUrl(args):
-    r = None
-    if len(args) == 3:
-        r = SendRequest({"act": args[0], 'content': args[1], 'pwd': args[2]})
-        
-    if len(args) == 2:
-        r = SendRequest({"act": args[0], 'content': args[1],})
+    r = SendRequest(dict(zip(('act', 'content', 'pwd'), args)))
     
-    if r != None and r['error'] == 0:
+    if r is not None and r['error'] == 0:
         for item in r['items']:
             print "source url %s was shorted to %s" % (item['source'], item['url'])
     
 
 def DeleteUrl(args):
-    r = None
-    if len(args) == 2:
-        r = SendRequest({"act": args[0], 'content': args[1],})
-        if r != None and r['error'] == 0:
-            for item in r['items']:
-                print "url %s was deleted" % (item['source'])
+    r = SendRequest(dict(zip(('act', 'content'), args)))
+    if r is not None and r['error'] == 0:
+        for item in r['items']:
+            print "url %s was deleted" % (item['source'])
     else:
         print "insuffucient args"
 
